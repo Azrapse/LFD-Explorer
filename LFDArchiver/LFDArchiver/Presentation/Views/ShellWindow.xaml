@@ -1,0 +1,107 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+        xmlns:vm="clr-namespace:LfdArchiver.Applications.ViewModels"
+        xmlns:Custom="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon" x:Class="LfdArchiver.Presentation.Views.ShellWindow"
+        xmlns:util="clr-namespace:LfdArchiver.Util"
+        mc:Ignorable="d" Title="{Binding Title}" Width="600" Height="600"
+        d:DataContext="{d:DesignInstance {x:Type vm:ShellViewModel}}" Icon="/LfdArchiver;component/Presentation/Resources/Images/Empire.png" WindowStartupLocation="CenterScreen">
+
+    <DockPanel>
+        <Ribbon Height="Auto" VerticalAlignment="Top" DockPanel.Dock="Top">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu>
+                    <RibbonApplicationMenu.Background>
+                        <ImageBrush ImageSource="/LfdArchiver;component/Presentation/Resources/Images/Empire.png" Stretch="Uniform"/>
+                    </RibbonApplicationMenu.Background>
+                    <RibbonMenuItem Header="Open" Command="{Binding OpenCommand}" ImageSource="/LfdArchiver;component/Presentation/Resources/Images/OpenFile.png" />
+                    <RibbonMenuItem Header="Save" Command="{Binding SaveCommand}" ImageSource="/LfdArchiver;component/Presentation/Resources/Images/Save.png"/>
+                    <RibbonMenuItem Header="Save as..." Command="{Binding SaveAsCommand}" ImageSource="/LfdArchiver;component/Presentation/Resources/Images/SaveAs.png"/>
+                    <Separator></Separator>
+                    <RibbonMenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
+            <RibbonTab Header="LFD Archive">
+                <RibbonGroup Header="Archive">
+                    <RibbonButton Label="Open" LargeImageSource="/LfdArchiver;component/Presentation/Resources/Images/OpenFile.png" Command="{Binding OpenCommand}">
+                        <RibbonButton.ControlSizeDefinition>
+                            <RibbonControlSizeDefinition/>
+                        </RibbonButton.ControlSizeDefinition>
+                    </RibbonButton>
+                    <RibbonButton Label="Save" LargeImageSource="/LfdArchiver;component/Presentation/Resources/Images/Save.png" Command="{Binding SaveCommand}" IsEnabled="{Binding Archive.IsChanged}">
+                        <RibbonButton.ControlSizeDefinition>
+                            <RibbonControlSizeDefinition/>
+                        </RibbonButton.ControlSizeDefinition>
+                    </RibbonButton>
+                    <RibbonButton Label="Save as..." LargeImageSource="/LfdArchiver;component/Presentation/Resources/Images/SaveAs.png" Command="{Binding SaveAsCommand}">
+                        <RibbonButton.ControlSizeDefinition>
+                            <RibbonControlSizeDefinition/>
+                        </RibbonButton.ControlSizeDefinition>
+                    </RibbonButton>
+                </RibbonGroup>
+                <RibbonGroup Header="Resource">
+                    <RibbonButton Label="Add" LargeImageSource="/LfdArchiver;component/Presentation/Resources/Images/Add.png" Command="{Binding AddCommand}">
+                        <RibbonButton.ControlSizeDefinition>
+                            <RibbonControlSizeDefinition ImageSize="Large"/>
+                        </RibbonButton.ControlSizeDefinition>
+                    </RibbonButton>
+                    <RibbonButton Label="Extract" LargeImageSource="/LfdArchiver;component/Presentation/Resources/Images/Extract.png" Command="{Binding ExtractCommand}">
+                        <RibbonButton.ControlSizeDefinition>
+                            <RibbonControlSizeDefinition ImageSize="Large"/>
+                        </RibbonButton.ControlSizeDefinition>
+                    </RibbonButton>
+                    <RibbonButton Label="Remove" LargeImageSource="/LfdArchiver;component/Presentation/Resources/Images/Remove.png" Command="{Binding DeleteCommand}">
+                        <RibbonButton.ControlSizeDefinition>
+                            <RibbonControlSizeDefinition ImageSize="Large"/>
+                        </RibbonButton.ControlSizeDefinition>
+                    </RibbonButton>
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="17*"/>
+                <ColumnDefinition Width="500*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="400*"/>
+                <RowDefinition Height="25*" />
+            </Grid.RowDefinitions>
+            <ListView Margin="10" 
+                        x:Name="lvResources" 
+                        ItemsSource="{Binding Archive.Entries}" 
+                        MouseMove="lvResources_MouseMove" 
+                        MouseDown="lvResources_MouseDown" 
+                        MouseUp="lvResources_MouseUp" 
+                        Grid.ColumnSpan="2" 
+                        Grid.Row="0"
+                        Drop="lvResources_Drop" 
+                        AllowDrop="True"
+                        util:GridViewSort.AutoSort="True"
+                        util:GridViewSort.SortGlyphAscending="/LfdArchiver;component/Presentation/Resources/Images/SortUp.png"
+                        util:GridViewSort.SortGlyphDescending="/LfdArchiver;component/Presentation/Resources/Images/SortDown.png">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding Name}" util:GridViewSort.PropertyName="Name" />
+                        <GridViewColumn Header="Type" Width="50" DisplayMemberBinding="{Binding Type}" util:GridViewSort.PropertyName="Type" />
+                        <GridViewColumn Header="Size" Width="75" DisplayMemberBinding="{Binding Length}" util:GridViewSort.PropertyName="Length" />
+                        <GridViewColumn Header="Description" Width="250" DisplayMemberBinding="{Binding Description}" util:GridViewSort.PropertyName="Description"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StatusBar Grid.ColumnSpan="2" VerticalAlignment="Bottom" Grid.Row="1">
+                <StatusBarItem Visibility="{Binding ShowNoTableOfContentsWarning}">
+                    <TextBlock>This archive lacks a table of contents and will not be added any even if modified.</TextBlock>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Left">Resources:</TextBlock>
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding Archive.Entries.Count}"></TextBlock>
+                    </DockPanel>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+    </DockPanel>
+</Window>
