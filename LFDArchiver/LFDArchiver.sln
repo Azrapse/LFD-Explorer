@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LfdArchiver", "LFDArchiver\LfdArchiver.csproj", "{1B9B9704-A33F-4777-AF0A-7F1741EAB91D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LfdArchiverTests", "LfdArchiverTests\LfdArchiverTests.csproj", "{471E9DCF-19CC-4821-9CE0-9EEF9A642B6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LfdArchiverTests", "LfdArchiverTests\LfdArchiverTests.csproj", "{471E9DCF-19CC-4821-9CE0-9EEF9A642B6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
