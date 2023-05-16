@@ -11,7 +11,9 @@ namespace LfdArchiverTests
         public void TestLoad()
         {
             var archive = new ResourceArchive();
-            archive.Load("MISSIONS.LFD");
+            var path = Path.Combine(Path.GetDirectoryName(typeof(Tests).Assembly.Location) ?? "", "MISSIONS.LFD");
+
+            archive.Load(path);
             Assert.That(archive.Entries.Any());
         }
 
