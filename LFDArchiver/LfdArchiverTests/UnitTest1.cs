@@ -8,9 +8,11 @@ namespace LfdArchiverTests
         }
 
         [Test]
-        public void Test1()
+        public void TestLoad()
         {
-            Assert.Pass();
+            var archive = new ResourceArchive();
+            archive.Load("MISSIONS.LFD");
+            Assert.That(archive.Entries.Any());
         }
 
         [Test]

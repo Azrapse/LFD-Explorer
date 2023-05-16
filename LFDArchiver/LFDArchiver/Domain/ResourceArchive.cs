@@ -8,7 +8,7 @@ using System.Text;
 
 namespace LfdArchiver.Domain
 {
-    internal class ResourceArchive : INotifyPropertyChanged
+    public class ResourceArchive : INotifyPropertyChanged
     {
         public bool HasTableOfContents { get; set; }
 
